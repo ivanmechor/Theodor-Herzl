@@ -4,7 +4,7 @@ const path = require('path');
 
 const root = __dirname;
 const port = Number(process.env.PORT || 4173);
-const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+const herzlN8nWebhookUrl = process.env.HERZL_N8N_WEBHOOK_URL;
 
 const types = {
   '.html': 'text/html; charset=utf-8',
@@ -24,14 +24,14 @@ http.createServer((req, res) => {
       rawBody += chunk;
     });
     req.on('end', async () => {
-      if (!n8nWebhookUrl) {
+      if (!herzlN8nWebhookUrl) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify({ error: 'Set N8N_WEBHOOK_URL before running dev-server.js' }));
+        res.end(JSON.stringify({ error: 'Set HERZL_N8N_WEBHOOK_URL before running dev-server.js' }));
         return;
       }
 
       try {
-        const n8nResponse = await fetch(n8nWebhookUrl, {
+        const n8nResponse = await fetch(herzlN8nWebhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: rawBody,

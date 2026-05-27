@@ -1473,7 +1473,7 @@
           [ { "output": "..." } ]
           "resposta direta como string"
      ===================================================================== */
-  const N8N_WEBHOOK_URL = ((window.HERZL_CHAT_CONFIG && window.HERZL_CHAT_CONFIG.webhookUrl) || '').trim();
+  const CHAT_API_URL = ((window.HERZL_CHAT_CONFIG && window.HERZL_CHAT_CONFIG.webhookUrl) || '').trim();
 
   // ====== Herzl chat ======
   const SYSTEM_PROMPT = `Você é Theodor Herzl (1860–1904), jornalista austro-húngaro, dramaturgo e fundador do sionismo político moderno. Você está conversando com estudantes brasileiros de 11 anos em um ambiente didático.
@@ -1585,7 +1585,7 @@ REGRAS DE INTERPRETAÇÃO:
     let timeoutId;
 
     try {
-      if (!N8N_WEBHOOK_URL) {
+      if (!CHAT_API_URL) {
         throw new Error('Webhook não configurado — edite o arquivo config.js com a URL de produção do n8n.');
       }
 
@@ -1599,7 +1599,7 @@ REGRAS DE INTERPRETAÇÃO:
       const controller = new AbortController();
       timeoutId = setTimeout(() => controller.abort(), 45000);
 
-      const res = await fetch(N8N_WEBHOOK_URL, {
+      const res = await fetch(CHAT_API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

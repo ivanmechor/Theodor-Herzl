@@ -1,4 +1,4 @@
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
+const HERZL_N8N_WEBHOOK_URL = process.env.HERZL_N8N_WEBHOOK_URL;
 
 function sendJson(res, statusCode, data) {
   res.statusCode = statusCode;
@@ -35,9 +35,9 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  if (!N8N_WEBHOOK_URL) {
+  if (!HERZL_N8N_WEBHOOK_URL) {
     sendJson(res, 500, {
-      error: 'N8N_WEBHOOK_URL is not configured in Vercel Environment Variables',
+      error: 'HERZL_N8N_WEBHOOK_URL is not configured in Vercel Environment Variables',
     });
     return;
   }
@@ -46,7 +46,7 @@ module.exports = async function handler(req, res) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 45000);
 
-    const n8nResponse = await fetch(N8N_WEBHOOK_URL, {
+    const n8nResponse = await fetch(HERZL_N8N_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body || {}),

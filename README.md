@@ -39,7 +39,7 @@ O site envia para o n8n:
 2. Em Settings > Environment Variables, crie:
 
 ```txt
-N8N_WEBHOOK_URL=https://SEU-N8N/webhook/SEU-WEBHOOK
+HERZL_N8N_WEBHOOK_URL=https://SEU-N8N/webhook/SEU-WEBHOOK
 ```
 
 3. Marque a variavel para o ambiente `Production`.
@@ -52,7 +52,7 @@ O navegador dos alunos chamara apenas `/api/chat`. A URL real do n8n fica guarda
 Rode um servidor estatico na pasta do projeto:
 
 ```bash
-$env:N8N_WEBHOOK_URL="https://SEU-N8N/webhook/SEU-WEBHOOK"
+$env:HERZL_N8N_WEBHOOK_URL="https://SEU-N8N/webhook/SEU-WEBHOOK"
 node dev-server.js
 ```
 
@@ -64,7 +64,7 @@ Opcoes simples:
 
 - GitHub Pages: publique esta pasta em um repositorio e ative Pages usando GitHub Actions.
 - Netlify: arraste a pasta do projeto para o painel "Deploy manually".
-- Vercel: importe o repositorio e configure a variavel `N8N_WEBHOOK_URL`.
+- Vercel: importe o repositorio e configure a variavel `HERZL_N8N_WEBHOOK_URL`.
 
 O site nao precisa de build.
 

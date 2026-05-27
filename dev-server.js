@@ -4,6 +4,7 @@ const path = require('path');
 
 const root = __dirname;
 const port = Number(process.env.PORT || 4173);
+const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
 
 const types = {
   '.html': 'text/html; charset=utf-8',
@@ -17,6 +18,37 @@ const types = {
 };
 
 http.createServer((req, res) => {
+  if (req.url === '/api/chat' && req.method === 'POST') {
+    let rawBody = '';
+    req.on('data', (chunk) => {
+      rawBody += chunk;
+    });
+    req.on('end', async () => {
+      if (!n8nWebhookUrl) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: 'Set N8N_WEBHOOK_URL before running dev-server.js' }));
+        return;
+      }
+
+      try {
+        const n8nResponse = await fetch(n8nWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: rawBody,
+        });
+        const text = await n8nResponse.text();
+        res.writeHead(n8nResponse.status, {
+          'Content-Type': n8nResponse.headers.get('content-type') || 'application/json; charset=utf-8',
+        });
+        res.end(text);
+      } catch (error) {
+        res.writeHead(502, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: 'Unable to contact n8n webhook' }));
+      }
+    });
+    return;
+  }
+
   const url = new URL(req.url, `http://127.0.0.1:${port}`);
   let pathname = decodeURIComponent(url.pathname);
   if (pathname === '/') pathname = '/index.html';

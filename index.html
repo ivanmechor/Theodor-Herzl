@@ -1609,7 +1609,13 @@ REGRAS DE INTERPRETAÇÃO:
       clearTimeout(timeoutId);
 
       if (!res.ok) {
-        throw new Error('Webhook respondeu com HTTP ' + res.status);
+        let details = '';
+        try {
+          const errorType = res.headers.get('content-type') || '';
+          const errorData = errorType.includes('application/json') ? await res.json() : await res.text();
+          details = extractReply(errorData) || errorData.error || errorData.details || '';
+        } catch (e) {}
+        throw new Error('Webhook respondeu com HTTP ' + res.status + (details ? ': ' + details : ''));
       }
 
       const contentType = res.headers.get('content-type') || '';

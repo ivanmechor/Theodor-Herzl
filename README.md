@@ -42,7 +42,8 @@ O site envia para o n8n:
 N8N_WEBHOOK_URL=https://SEU-N8N/webhook/SEU-WEBHOOK
 ```
 
-3. Faca o deploy.
+3. Marque a variavel para o ambiente `Production`.
+4. Faca um novo deploy depois de salvar a variavel.
 
 O navegador dos alunos chamara apenas `/api/chat`. A URL real do n8n fica guardada como variavel de ambiente na Vercel.
 

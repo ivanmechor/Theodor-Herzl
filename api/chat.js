@@ -36,7 +36,9 @@ module.exports = async function handler(req, res) {
   }
 
   if (!N8N_WEBHOOK_URL) {
-    sendJson(res, 500, { error: 'N8N_WEBHOOK_URL is not configured' });
+    sendJson(res, 500, {
+      error: 'N8N_WEBHOOK_URL is not configured in Vercel Environment Variables',
+    });
     return;
   }
 
